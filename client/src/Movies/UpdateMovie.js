@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import CreatableSelect from "react-select/creatable";
 import axios from "axios";
 
 const initialMovie = {
@@ -6,12 +7,12 @@ const initialMovie = {
     title: "",
     director: "",
     metascore: 0,
+    stars: [],
 };
 
 const UpdateMovie = (props) => {
-    //console.log(props.updateMovieList);
     const [movie, setMovie] = useState(initialMovie);
-    //const [movies, setMovies] = useState(props.movies);
+    const [starsState, setStarsState] = useState();
 
     useEffect(() => {
         const movieToUpdate = props.movies.find((movie) => {
@@ -21,7 +22,16 @@ const UpdateMovie = (props) => {
         if (movieToUpdate) {
             setMovie(movieToUpdate);
         }
-    }, [props.movies, props.match.params.id]);
+
+        setStarsState(
+            movie.stars.map((star) => {
+                return {
+                    label: star,
+                    value: star.replace(/\s+/g, "-").toLowerCase(),
+                };
+            })
+        );
+    }, [props.movies, props.match.params.id, movie.stars]);
 
     const changeHandler = (ev) => {
         ev.persist();
@@ -32,17 +42,22 @@ const UpdateMovie = (props) => {
         });
     };
 
+    const selectChangeHandler = (newValue, actionMeta) => {
+        // console.group("Value Changed");
+        // console.log(newValue);
+        // console.log(`action: ${actionMeta.action}`);
+        // console.groupEnd();
+        setStarsState(newValue);
+    };
+
     const handleSubmit = (e) => {
         e.preventDefault();
         // make a PUT request to edit the item
-        // axios
-        //     .all([
-        //         axios.put(
-        //             `http://localhost:5000/api/movies/${movie.id}`,
-        //             movie
-        //         ),
-        //         axios.get("http://localhost:5000/api/movies"),
-        //     ])
+        movie.stars = [];
+        for (let value of Object.values(starsState)) {
+            movie.stars.push(value.label);
+        }
+
         axios
             .put(`http://localhost:5000/api/movies/${movie.id}`, movie)
             .then((res) => {
@@ -54,7 +69,7 @@ const UpdateMovie = (props) => {
 
     return (
         <div>
-            <h2>Update Item</h2>
+            <h2>Update Movie</h2>
             <form onSubmit={handleSubmit}>
                 <input
                     type="text"
@@ -82,6 +97,22 @@ const UpdateMovie = (props) => {
                     value={Number(movie.metascore)}
                 />
                 <div className="baseline" />
+
+                {movie.stars ? (
+                    <CreatableSelect
+                        isMulti
+                        value={starsState}
+                        onChange={selectChangeHandler}
+                        options={movie.stars.map((star) => {
+                            return {
+                                label: star,
+                                value: star.replace(/\s+/g, "-").toLowerCase(),
+                            };
+                        })}
+                    />
+                ) : (
+                    <p>Loading..</p>
+                )}
 
                 <button className="md-button form-button">Update</button>
             </form>
