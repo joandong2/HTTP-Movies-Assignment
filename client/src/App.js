@@ -3,40 +3,69 @@ import { Route } from "react-router-dom";
 import SavedList from "./Movies/SavedList";
 import MovieList from "./Movies/MovieList";
 import Movie from "./Movies/Movie";
-import axios from 'axios';
+import AddMovie from "./Movies/AddMovie";
+import UpdateMovie from "./Movies/UpdateMovie";
+import axios from "axios";
 
 const App = () => {
-  const [savedList, setSavedList] = useState([]);
-  const [movieList, setMovieList] = useState([]);
+    const [savedList, setSavedList] = useState([]);
+    const [movieList, setMovieList] = useState([]);
 
-  const getMovieList = () => {
-    axios
-      .get("http://localhost:5000/api/movies")
-      .then(res => setMovieList(res.data))
-      .catch(err => console.log(err.response));
-  };
+    const getMovieList = () => {
+        axios
+            .get("http://localhost:5000/api/movies")
+            .then((res) => setMovieList(res.data))
+            .catch((err) => console.log(err.response));
+    };
 
-  const addToSavedList = movie => {
-    setSavedList([...savedList, movie]);
-  };
+    const addToSavedList = (movie) => {
+        setSavedList([...savedList, movie]);
+    };
 
-  useEffect(() => {
-    getMovieList();
-  }, []);
+    useEffect(() => {
+        getMovieList();
+    }, []);
 
-  return (
-    <>
-      <SavedList list={savedList} />
-
-      <Route exact path="/">
-        <MovieList movies={movieList} />
-      </Route>
-
-      <Route path="/movies/:id">
-        <Movie addToSavedList={addToSavedList} />
-      </Route>
-    </>
-  );
+    return (
+        <div className="row">
+            <div className="col-md-3">
+                <SavedList list={savedList} />
+            </div>
+            <div className="col-md-9">
+                <Route
+                    exact
+                    path="/"
+                    render={(props) => (
+                        <MovieList
+                            {...props}
+                            movies={movieList}
+                            addToSavedList={addToSavedList}
+                        />
+                    )}
+                />
+                <Route
+                    path="/movies/:id"
+                    render={(props) => (
+                        <Movie {...props} addToSavedList={addToSavedList} />
+                    )}
+                />
+                <Route
+                    path="/add-movie/"
+                    render={(props) => <AddMovie {...props} />}
+                />
+                <Route
+                    path="/update-movie/:id"
+                    render={(props) => (
+                        <UpdateMovie
+                            {...props}
+                            movies={movieList}
+                            updateMovieList={setMovieList}
+                        />
+                    )}
+                />
+            </div>
+        </div>
+    );
 };
 
 export default App;
