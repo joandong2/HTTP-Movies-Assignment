@@ -5,14 +5,16 @@ import MovieCard from "./MovieCard";
 function MovieList(props) {
     return (
         <div className="movie-list">
-            {props.movies.map((movie) => (
-                //   <Link key={movie.id} to={`/movies/${movie.id}`}>
-                //     <MovieCard movie={movie} />
-                //   </Link>
-                <div className="movie" key={movie.id}>
-                    <MovieCard {...props} movie={movie} />
-                </div>
-            ))}
+            <div className="row row-eq-height">
+                {props.movies.map((movie) => (
+                    //   <Link key={movie.id} to={`/movies/${movie.id}`}>
+                    //     <MovieCard movie={movie} />
+                    //   </Link>
+                    <div className="movie col-sm-4" key={movie.id}>
+                        <MovieCard {...props} movie={movie} />
+                    </div>
+                ))}
+            </div>
         </div>
     );
 }

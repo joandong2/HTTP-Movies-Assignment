@@ -1,12 +1,31 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat&display=swap");
+
 body {
     margin: 0;
     padding: 0;
     font-family: sans-serif;
     background-color: #f2f2f2;
+    font-family: "Montserrat", sans-serif;
+    box-sizing: border-box;
 }
 
-button {
-    cursor: pointer;
+.container {
+    padding-top: 25px;
+}
+
+.title-heading {
+    font-size: 2rem;
+}
+
+.navigation {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.navigation ul {
+    padding: 0;
+    margin: 0;
+    list-style-type: none;
 }
 
 .movie-card {
@@ -20,9 +39,46 @@ button {
     margin: 1rem auto;
 }
 
+.movie-card p {
+    margin-bottom: 5px;
+}
+
+.movie-title {
+    font-weight: bold;
+    font-size: 1rem;
+    min-height: 50px;
+}
+
 .movie-director {
     padding: 4px 0;
-    font-size: 0.8rem;
+}
+
+.movie-card button {
+    cursor: pointer;
+    margin-right: 3px;
+    margin-top: 10px;
+}
+
+.movie-metascore {
+    border-bottom: 1px solid #ececec;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+}
+
+.actors-list {
+    min-height: 120px;
+}
+
+.button-wrapper {
+    text-align: right;
+}
+
+.pre-infos {
+    margin-top: 10px;
+}
+
+.save-wrapper .movie-title {
+    min-height: 0;
 }
 
 .saved-list {
@@ -31,32 +87,41 @@ button {
     box-shadow: 0 -1px 0 #e0e0e0, 0 0 2px rgba(0, 0, 0, 0.12),
         0 2px 4px rgba(0, 0, 0, 0.24);
     padding: 1rem;
-    cursor: pointer;
+    /* cursor: pointer;
     position: relative;
     margin: 1rem auto;
     width: 75%;
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: space-between; */
+}
+
+.saved-list p {
+    margin-bottom: 5px;
 }
 
 .saved-list h3 {
     margin-right: 10px;
 }
 
+.saved-list ul {
+    margin: 0;
+    padding: 0 0 0 20px;
+}
+
 .saved-movie {
     margin: 0 10px;
 }
-.saved-active {
+/* .saved-active {
     color: blue;
     border: 1px solid grey;
     padding: 5px;
-}
-.save-wrapper {
+} */
+/* .save-wrapper {
     position: relative;
     width: 75%;
     margin: 1rem auto;
-}
+} */
 .save-button {
     position: absolute;
     top: 25px;

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import CreatableSelect from "react-select/creatable";
 import axios from "axios";
 
@@ -10,28 +10,9 @@ const initialMovie = {
     stars: [],
 };
 
-const UpdateMovie = (props) => {
+const AddMovie = () => {
     const [movie, setMovie] = useState(initialMovie);
     const [starsState, setStarsState] = useState();
-
-    useEffect(() => {
-        const movieToUpdate = props.movies.find((movie) => {
-            return `${movie.id}` === props.match.params.id;
-        });
-
-        if (movieToUpdate) {
-            setMovie(movieToUpdate);
-        }
-
-        setStarsState(
-            movie.stars.map((star) => {
-                return {
-                    label: star,
-                    value: star.replace(/\s+/g, "-").toLowerCase(),
-                };
-            })
-        );
-    }, [props.movies, props.match.params.id, movie.stars]);
 
     const changeHandler = (ev) => {
         ev.persist();
@@ -43,23 +24,18 @@ const UpdateMovie = (props) => {
     };
 
     const selectChangeHandler = (newValue, actionMeta) => {
-        // console.group("Value Changed");
-        // console.log(newValue);
-        // console.log(`action: ${actionMeta.action}`);
-        // console.groupEnd();
         setStarsState(newValue);
     };
 
     const handleSubmit = (e) => {
         e.preventDefault();
         // make a PUT request to edit the item
-        movie.stars = [];
         for (let value of Object.values(starsState)) {
             movie.stars.push(value.label);
         }
 
         axios
-            .put(`http://localhost:5000/api/movies/${movie.id}`, movie)
+            .post(`http://localhost:5000/api/movies/`, movie)
             .then((res) => {
                 window.location.replace("/");
             })
@@ -68,7 +44,7 @@ const UpdateMovie = (props) => {
 
     return (
         <div>
-            <h2>Update Movie #{movie.id}</h2>
+            <h2>Add New Movie</h2>
             <form onSubmit={handleSubmit}>
                 <div className="form-group">
                     <label htmlFor="title">Title: </label>
@@ -126,7 +102,7 @@ const UpdateMovie = (props) => {
                     )}
                 </div>
 
-                <button className="btn btn-info">Update</button>
+                <button className="btn btn-info">Add New movie</button>
             </form>
             <div class="pre-infos">
                 <pre className="pre">{JSON.stringify(movie, null, 2)}</pre>
@@ -135,4 +111,4 @@ const UpdateMovie = (props) => {
     );
 };
 
-export default UpdateMovie;
+export default AddMovie;
